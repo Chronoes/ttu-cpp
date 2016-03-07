@@ -33,7 +33,7 @@ int checkSum(std::string idCode, bool recheck) {
             weight++;
             increment++;
         }
-        sum += std::stoi(idCode.substr(i, i + 1)) * increment;
+        sum += std::atoi(idCode.substr(i, i + 1).c_str()) * increment;
     }
     auto remainder = sum % 11;
     if (!recheck && remainder == 10) {
@@ -54,26 +54,25 @@ int checkId(std::string idCode) {
     }
 
     auto error = CORRECT_CODE;
-    auto first = std::stoi(idCode.substr(0, 1));
+    auto first = std::atoi(idCode.substr(0, 1).c_str());
     if (first < 1 || first > 6) {
         error += WRONG_FIRST_NUMBER;
     }
 
-    auto month = std::stoi(idCode.substr(3, 2));
+    auto month = std::atoi(idCode.substr(3, 2).c_str());
     if (month < 1 || month > 12) {
         error += WRONG_MONTH;
     }
 
-    auto day = std::stoi(idCode.substr(5, 2));
-    if (day < 1 || day > getDayCount(month, std::stoi(idCode.substr(1, 2)))) {
+    auto day = std::atoi(idCode.substr(5, 2).c_str());
+    if (day < 1 || day > getDayCount(month, std::atoi(idCode.substr(1, 2).c_str()))) {
         error += WRONG_DAY_COUNT;
     }
 
-    if (checkSum(idCode) != std::stoi(idCode.substr(10, 1))) {
+    if (checkSum(idCode) != std::atoi(idCode.substr(10, 1).c_str())) {
         error += WRONG_CHECKSUM;
     }
     return error;
-
 }
 
 int main(int argc, char const *argv[]) {
@@ -90,9 +89,9 @@ int main(int argc, char const *argv[]) {
     std::map<const int, const char*> errorMessages;
     errorMessages[WRONG_LENGTH] = "ID code is not 11 digits long.";
     errorMessages[WRONG_SYMBOLS] = "ID code must be all digits.";
-    errorMessages[WRONG_FIRST_NUMBER] = "First number must be between 1 < 6.";
+    errorMessages[WRONG_FIRST_NUMBER] = "First number must be between 1 and 6 inclusive.";
     errorMessages[WRONG_MONTH] = "Month must be between 01 and 12 inclusive.";
-    errorMessages[WRONG_DAY_COUNT] = "Day count is wrong for given month";
+    errorMessages[WRONG_DAY_COUNT] = "Day count is wrong for given month.";
     errorMessages[WRONG_CHECKSUM] = "ID code checksum is invalid.";
 
     if (result == CORRECT_CODE) {
@@ -104,6 +103,7 @@ int main(int argc, char const *argv[]) {
             }
         }
     }
+    std::cout << result;
 
     return 0;
 }
