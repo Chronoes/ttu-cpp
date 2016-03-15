@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <math.h>
+// #include <stdio.h>
 #include "kodu2.h"
 
 bool splitTimeString(std::string timeString, std::vector<std::string>& components) {
@@ -83,34 +84,52 @@ bool checktime(std::string timeString) {
 }
 
 double ctime(std::string timeString, char unit) {
-    if (unit != 's' || unit != 'm' || unit != 'h') {
+    #if DEBUG
+    std::cout << "Unit: " << unit << std::endl;
+    #endif
+
+    if (unit != 's' && unit != 'm' && unit != 'h') {
         return -1;
     }
     std::vector<std::string> components;
-    if (splitTimeString(timeString, components) && checktime(timeString, components)) {
+    if (!splitTimeString(timeString, components) || !checktime(timeString, components)) {
         return -1;
     }
 
     double value = 0;
     auto iter = components.rbegin();
     if ((*iter)[0] == '.') {
-        value += (double) std::atoi((*iter).substr(1, 0).c_str()) / 1e-3;
+        value += (double) std::atoi((*iter).substr(1, -1).c_str()) / 1e+3;
         iter++;
     }
 
-    for (size_t i = 0; iter != components.rend(); iter++, i++) {
+    #if DEBUG
+    std::cout << "Milliseconds: " << value << std::endl;
+    #endif
+
+    int i = 0;
+    if (unit == 'm') {
+        i = -1;
+        value /= 60.0;
+    } else if (unit == 'h') {
+        i = -2;
+        value /= 3600.0;
+    }
+
+    for (; iter != components.rend(); iter++, i++) {
         value += std::atoi((*iter).c_str()) * pow(60, i);
     }
     return value;
 }
 
+std::string stime(const double seconds) {
+    char result[128];
+    std::sprintf(result, "%d:%02d:%06.3f", (int) (seconds / 3600), (int) (seconds / 60) % 60, ((int) seconds % 60) + seconds - (int) seconds);
+    return result;
+}
+
 #ifndef TESTING
 int main(int argc, char const *argv[]) {
-    std::vector<int> sth;
-    sth.push_back('9' - '0');
-    std::cout << sth[0];
-    std::string test = "test";
-    std::cout << test;
     return 0;
 }
 #endif

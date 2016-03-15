@@ -1,28 +1,8 @@
-#include <iostream>
-#include <sstream>
 #include <map>
 #include <algorithm>
-#include <math.h>
+
+#include "test_functions.h"
 #include "kodu2.h"
-
-typedef struct testfunc_t {
-    bool passed = true;
-    std::string name;
-    std::vector<std::string> failedInputs;
-    testfunc_t(std::string funcName) : name(funcName) {}
-} TestFunc;
-
-bool deepEqual(std::vector<std::string> expected, std::vector<std::string> actual) {
-    if (actual.size() != expected.size()) return false;
-    for (size_t i = 0; i < actual.size(); i++) {
-        if (actual[i] != expected[i]) return false;
-    }
-    return true;
-}
-
-bool equals(double value1, double value2, double epsilon) {
-    return fabs(value1 - value2) <= epsilon;
-}
 
 TestFunc testSplitToComponents() {
     TestFunc func(__FUNCTION__);
@@ -116,7 +96,7 @@ TestFunc testCheckTimeFaulty() {
     return func;
 }
 
-TestFunc testConvertTime_second() {
+TestFunc testConvertTime_seconds() {
     TestFunc func(__FUNCTION__);
 
     std::map<std::string, double> cases;
@@ -128,7 +108,8 @@ TestFunc testConvertTime_second() {
     cases["30:22,231"] = 30 * 60 + 22.231;
 
     for (auto& testCase : cases) {
-        if (equals(ctime(testCase.first), testCase.second, 1e-3)) {
+        double result = ctime(testCase.first);
+        if (result == -1 || !equals(result, testCase.second, 1e-3)) {
             func.passed = false;
             func.failedInputs.push_back(testCase.first);
         }
@@ -136,29 +117,67 @@ TestFunc testConvertTime_second() {
     return func;
 }
 
-std::string wrapString(std::string toWrap, char wrapper, size_t fullLength) {
-    std::string wrapperString = std::string((fullLength - toWrap.length()) / 2, wrapper);
-    return wrapperString + toWrap + wrapperString;
+TestFunc testConvertTime_minutes() {
+    TestFunc func(__FUNCTION__);
+
+    std::map<std::string, double> cases;
+    cases["90.351"] = 90.351 / 60.0;
+    cases["33:50.120"] = 33 + 50.120 / 60.0;
+    cases["1322:10:23.999"] = 1322 * 60 + 10 + 23.999 / 60.0;
+    cases["850"] = 850 / 60.0;
+    cases["90:30"] = 90 + 30 / 60.0;
+    cases["30:22,231"] = 30 + 22.231 / 60.0;
+
+    for (auto& testCase : cases) {
+        double result = ctime(testCase.first, 'm');
+        if (result == -1 || !equals(result, testCase.second, 1e-3)) {
+            func.passed = false;
+            func.failedInputs.push_back(testCase.first);
+        }
+    }
+    return func;
 }
 
-void runTest(TestFunc func()) {
-    TestFunc result = func();
-    std::cout << result.name << "()";
-    if (result.passed) {
-        std::cout << " -- PASS";
-    } else {
-        std::cout << " -- FAIL" << std::endl;
-        std::stringstream inputs;
-        size_t maxLength = 0;
-        for (size_t i = 0; i < result.failedInputs.size(); i++) {
-            std::string tmp = "| Input: '" + result.failedInputs[i] + "'";
-            if (tmp.length() > maxLength) maxLength = tmp.length();
-            inputs << tmp << std::endl;
+TestFunc testConvertTime_hours() {
+    TestFunc func(__FUNCTION__);
+
+    std::map<std::string, double> cases;
+    cases["90.351"] = 90.351 / 3600.0;
+    cases["33:50.120"] = 33 / 60.0 + 50.120 / 3600.0;
+    cases["1322:10:23.999"] = 1322 + 10 / 60.0 + 23.999 / 3600.0;
+    cases["850"] = 850 / 3600.0;
+    cases["90:30"] = 90 / 60.0 + 30 / 3600.0;
+    cases["30:22,231"] = 30 / 60.0 + 22.231 / 3600.0;
+
+    for (auto& testCase : cases) {
+        double result = ctime(testCase.first, 'h');
+        if (result == -1 || !equals(result, testCase.second, 1e-3)) {
+            func.passed = false;
+            func.failedInputs.push_back(testCase.first);
         }
-        if (maxLength % 2) maxLength++;
-        std::cout << wrapString(" Failed ", '-', maxLength) << std::endl << inputs.str() << std::string(maxLength, '-');
     }
-    std::cout << std::endl;
+    return func;
+}
+
+TestFunc testFormatTime() {
+    TestFunc func(__FUNCTION__);
+
+    std::map<double, std::string> cases;
+    cases[90.351] = "0:01:30.351";
+    cases[33 * 60 + 50.120] = "0:33:50.120";
+    cases[1322 * 3600 + 10 * 60 + 23.999] = "1322:10:23.999";
+    cases[850] = "0:14:10.000";
+    cases[90 * 60 + 30] = "1:30:30.000";
+    cases[30 * 60 + 22.231] = "0:30:22.231";
+    cases[58 * 60 + 1.02] = "0:58:01.020";
+
+    for (auto& testCase : cases) {
+        if (stime(testCase.first) != testCase.second) {
+            func.passed = false;
+            func.failedInputs.push_back(std::to_string(testCase.first));
+        }
+    }
+    return func;
 }
 
 int main(int argc, char const *argv[]) {
@@ -166,6 +185,9 @@ int main(int argc, char const *argv[]) {
     runTest(testSplitToComponentsFaulty);
     runTest(testCheckTime);
     runTest(testCheckTimeFaulty);
-    runTest(testConvertTime_second);
+    runTest(testConvertTime_seconds);
+    runTest(testConvertTime_minutes);
+    runTest(testConvertTime_hours);
+    runTest(testFormatTime);
     return 0;
 }
