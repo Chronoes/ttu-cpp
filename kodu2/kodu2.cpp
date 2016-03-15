@@ -2,12 +2,13 @@
 #include <string>
 #include <algorithm>
 #include <math.h>
-// #include <stdio.h>
+#include <fstream>
+
 #include "kodu2.h"
 
 bool splitTimeString(std::string timeString, std::vector<std::string>& components) {
     if (timeString[0] == ' ') {
-        timeString = timeString.substr(1, 0);
+        timeString = timeString.substr(1, -1);
     }
 
     std::vector<std::string> stringComponents;
@@ -89,11 +90,11 @@ double ctime(std::string timeString, char unit) {
     #endif
 
     if (unit != 's' && unit != 'm' && unit != 'h') {
-        return -1;
+        return WRONG_FORMAT;
     }
     std::vector<std::string> components;
     if (!splitTimeString(timeString, components) || !checktime(timeString, components)) {
-        return -1;
+        return WRONG_FORMAT;
     }
 
     double value = 0;
@@ -128,8 +129,52 @@ std::string stime(const double seconds) {
     return result;
 }
 
+Racer parseRacer(std::ifstream& file) {
+    Racer racer;
+    char name[128], timeString[128];
+    for (size_t i = 0; i < 6; i++) {
+        if (i == 1) {
+            file.get(name, 128, '\t');
+        } else if (i == 5) {
+            file.get(timeString, 128, '\t');
+        } else {
+            file.ignore(1024, '\t');
+        }
+    }
+    file.ignore(1024, '\n');
+    racer.name = name;
+    racer.time = timeString;
+    if (racer.time.back() == 's') {
+        racer.time.pop_back();
+    }
+    if (racer.time.front() == '+' || racer.time.front() == ' ') {
+        racer.time = racer.time.substr(1, -1);
+    }
+    return racer;
+}
+
 #ifndef TESTING
 int main(int argc, char const *argv[]) {
+    if (argc < 2) {
+        std::cout << "Need input file" << std::endl;
+        return -1;
+    }
+    std::ifstream file(argv[1]);
+    auto leader = parseRacer(file);
+    std::cout << leader.name << '\t' << leader.time << std::endl;
+
+    auto leaderTime = ctime(leader.time);
+    #if DEBUG
+    std::cout << "Leader time: '" << leader.time << "'; parsed: " << leaderTime << std::endl;
+    #endif
+    while (!file.eof()) {
+        auto racer = parseRacer(file);
+        if (racer.time.find_first_of("lap") != std::string::npos) {
+            break;
+        }
+        std::cout << racer.name << '\t' << stime(leaderTime + ctime(racer.time)) << std::endl;
+    }
+    file.close();
     return 0;
 }
 #endif

@@ -2,7 +2,9 @@ SHELL := $(shell echo $$SHELL)
 CC=clang++
 CFLAGS=-Wall -std=c++11
 
-all: test
+all: test kodu2
+
+kodu2:
 	$(CC) $(CFLAGS) -o kodu2 kodu2.cpp
 
 test:

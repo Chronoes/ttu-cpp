@@ -1,0 +1,10 @@
+1	HAM Lewis Hamilton	GBR	Mercedes	 1:31:54.067	25
+2	ROS Nico Rosberg	GER	Mercedes	+1.360s	18
+3	VET Sebastian Vettel	GER	Ferrari	+34.523s	15
+4	MAS Felipe Massa	BRA	Williams	+38.196s	12
+5	NAS Felipe Nasr	BRA	Sauber	+95.149s	10
+6	RIC Daniel Ricciardo	AUS	Red Bull Racing	+1 lap	8
+7	HUL Nico Hulkenberg	GER	Force India	+1 lap	6
+8	ERI Marcus Ericsson	SWE	Sauber	+1 lap	4
+9	SAI Carlos Sainz	ESP	Toro Rosso	+1 lap	2
+10	PER Sergio Perez	MEX	Force India	+1 lap	1
