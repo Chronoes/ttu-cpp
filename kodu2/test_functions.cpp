@@ -5,14 +5,6 @@
 
 #include "test_functions.h"
 
-bool deepEqual(std::vector<std::string> expected, std::vector<std::string> actual) {
-    if (actual.size() != expected.size()) return false;
-    for (size_t i = 0; i < actual.size(); i++) {
-        if (actual[i] != expected[i]) return false;
-    }
-    return true;
-}
-
 bool equals(double value1, double value2, double epsilon) {
     return fabs(value1 - value2) <= epsilon;
 }
@@ -22,17 +14,17 @@ std::string wrapString(std::string toWrap, char wrapper, size_t fullLength) {
     return wrapperString + toWrap + wrapperString;
 }
 
-void runTest(TestFunc func()) {
-    TestFunc result = func();
-    std::cout << result.name << "()";
-    if (result.passed) {
+void runTest(Test func()) {
+    Test result = func();
+    std::cout << result.getName() << "()";
+    if (result.hasPassed()) {
         std::cout << " -- PASS";
     } else {
         std::cout << " -- FAIL" << std::endl;
         std::stringstream inputs;
         size_t maxLength = 0;
-        for (size_t i = 0; i < result.failedInputs.size(); i++) {
-            std::string tmp = "| Input: '" + result.failedInputs[i] + "'";
+        for (auto iter = result.getFailedStart(); iter != result.getFailedEnd(); iter++) {
+            std::string tmp = "| Input: '" + *iter + "'";
             if (tmp.length() > maxLength) maxLength = tmp.length();
             inputs << tmp << std::endl;
         }

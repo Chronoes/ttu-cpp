@@ -4,8 +4,8 @@
 #include "test_functions.h"
 #include "kodu2.h"
 
-TestFunc testSplitToComponents() {
-    TestFunc func(__FUNCTION__);
+Test testSplitToComponents() {
+    Test test(__FUNCTION__);
 
     std::map<std::string, std::vector<std::string>> cases;
     cases["90.351"] = std::vector<std::string>({"90", ".351"});
@@ -17,17 +17,16 @@ TestFunc testSplitToComponents() {
 
     std::vector<std::string> components;
     for (auto& testCase : cases) {
-        if (!(splitTimeString(testCase.first, components) && deepEqual(testCase.second, components))) {
-            func.passed = false;
-            func.failedInputs.push_back(testCase.first);
+        if (splitTimeString(testCase.first, components) && testCase.second != components) {
+            test.fail(testCase.first);
         }
         components.clear();
     }
-    return func;
+    return test;
 }
 
-TestFunc testSplitToComponentsFaulty() {
-    TestFunc func(__FUNCTION__);
+Test testSplitToComponentsFaulty() {
+    Test test(__FUNCTION__);
 
     std::vector<std::string> cases({
         "",
@@ -44,16 +43,15 @@ TestFunc testSplitToComponentsFaulty() {
     std::vector<std::string> components;
     for (size_t i = 0; i < cases.size(); i++) {
         if (splitTimeString(cases[i], components)) {
-            func.passed = false;
-            func.failedInputs.push_back(cases[i]);
+            test.fail(cases[i]);
         }
         components.clear();
     }
-    return func;
+    return test;
 }
 
-TestFunc testCheckTime() {
-    TestFunc func(__FUNCTION__);
+Test testCheckTime() {
+    Test test(__FUNCTION__);
 
     std::vector<std::string> cases({
         "200",
@@ -69,15 +67,14 @@ TestFunc testCheckTime() {
 
     for (size_t i = 0; i < cases.size(); i++) {
         if (!checktime(cases[i])) {
-            func.passed = false;
-            func.failedInputs.push_back(cases[i]);
+            test.fail(cases[i]);
         }
     }
-    return func;
+    return test;
 }
 
-TestFunc testCheckTimeFaulty() {
-    TestFunc func(__FUNCTION__);
+Test testCheckTimeFaulty() {
+    Test test(__FUNCTION__);
 
     std::vector<std::string> cases({
         "15:60",
@@ -89,15 +86,14 @@ TestFunc testCheckTimeFaulty() {
 
     for (size_t i = 0; i < cases.size(); i++) {
         if (checktime(cases[i])) {
-            func.passed = false;
-            func.failedInputs.push_back(cases[i]);
+            test.fail(cases[i]);
         }
     }
-    return func;
+    return test;
 }
 
-TestFunc testConvertTime_seconds() {
-    TestFunc func(__FUNCTION__);
+Test testConvertTime_seconds() {
+    Test test(__FUNCTION__);
 
     std::map<std::string, double> cases;
     cases["90.351"] = 90.351;
@@ -110,15 +106,14 @@ TestFunc testConvertTime_seconds() {
     for (auto& testCase : cases) {
         double result = ctime(testCase.first);
         if (result == -1 || !equals(result, testCase.second, 1e-3)) {
-            func.passed = false;
-            func.failedInputs.push_back(testCase.first);
+            test.fail(testCase.first);
         }
     }
-    return func;
+    return test;
 }
 
-TestFunc testConvertTime_minutes() {
-    TestFunc func(__FUNCTION__);
+Test testConvertTime_minutes() {
+    Test test(__FUNCTION__);
 
     std::map<std::string, double> cases;
     cases["90.351"] = 90.351 / 60.0;
@@ -131,15 +126,14 @@ TestFunc testConvertTime_minutes() {
     for (auto& testCase : cases) {
         double result = ctime(testCase.first, 'm');
         if (result == -1 || !equals(result, testCase.second, 1e-3)) {
-            func.passed = false;
-            func.failedInputs.push_back(testCase.first);
+            test.fail(testCase.first);
         }
     }
-    return func;
+    return test;
 }
 
-TestFunc testConvertTime_hours() {
-    TestFunc func(__FUNCTION__);
+Test testConvertTime_hours() {
+    Test test(__FUNCTION__);
 
     std::map<std::string, double> cases;
     cases["90.351"] = 90.351 / 3600.0;
@@ -152,15 +146,14 @@ TestFunc testConvertTime_hours() {
     for (auto& testCase : cases) {
         double result = ctime(testCase.first, 'h');
         if (result == -1 || !equals(result, testCase.second, 1e-3)) {
-            func.passed = false;
-            func.failedInputs.push_back(testCase.first);
+            test.fail(testCase.first);
         }
     }
-    return func;
+    return test;
 }
 
-TestFunc testFormatTime() {
-    TestFunc func(__FUNCTION__);
+Test testFormatTime() {
+    Test test(__FUNCTION__);
 
     std::map<double, std::string> cases;
     cases[90.351] = "0:01:30.351";
@@ -173,11 +166,10 @@ TestFunc testFormatTime() {
 
     for (auto& testCase : cases) {
         if (stime(testCase.first) != testCase.second) {
-            func.passed = false;
-            func.failedInputs.push_back(std::to_string(testCase.first));
+            test.fail(std::to_string(testCase.first));
         }
     }
-    return func;
+    return test;
 }
 
 int main(int argc, char const *argv[]) {

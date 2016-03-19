@@ -4,16 +4,20 @@
 #include <string>
 #include <algorithm>
 
-typedef struct testfunc_t {
+class Test {
     bool passed = true;
     std::string name;
     std::vector<std::string> failedInputs;
-    testfunc_t(std::string funcName) : name(funcName) {}
-} TestFunc;
+    public:
+        Test(std::string funcName) : name(funcName) {}
+        std::string getName() { return this->name; }
+        void fail(std::string input) { this->passed = false; this->failedInputs.push_back(input); }
+        bool hasPassed() { return this->passed; }
+        std::vector<std::string>::iterator getFailedStart() { return this->failedInputs.begin(); }
+        std::vector<std::string>::iterator getFailedEnd() { return this->failedInputs.end(); }
+};
 
-void runTest(TestFunc func());
-
-bool deepEqual(std::vector<std::string> expected, std::vector<std::string> actual);
+void runTest(Test func());
 
 bool equals(double value1, double value2, double epsilon);
 

@@ -1,5 +1,5 @@
 SHELL := $(shell echo $$SHELL)
-CC=clang++
+CC=g++
 CFLAGS=-Wall -std=c++11
 
 all: test kodu2
