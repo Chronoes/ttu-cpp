@@ -4,9 +4,7 @@
 #include "test_functions.h"
 #include "kodu2.h"
 
-Test testSplitToComponents() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(SplitToComponents) {
     std::map<std::string, std::vector<std::string>> cases;
     cases["90.351"] = std::vector<std::string>({"90", ".351"});
     cases["33:50.120"] = std::vector<std::string>({"33", "50", ".120"});
@@ -22,12 +20,9 @@ Test testSplitToComponents() {
         }
         components.clear();
     }
-    return test;
-}
+} END_TEST
 
-Test testSplitToComponentsFaulty() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(SplitToComponentsFaulty) {
     std::vector<std::string> cases({
         "",
         ".356",
@@ -47,12 +42,9 @@ Test testSplitToComponentsFaulty() {
         }
         components.clear();
     }
-    return test;
-}
+} END_TEST
 
-Test testCheckTime() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(CheckTime) {
     std::vector<std::string> cases({
         "200",
         "15:30",
@@ -70,12 +62,9 @@ Test testCheckTime() {
             test.fail(cases[i]);
         }
     }
-    return test;
-}
+} END_TEST
 
-Test testCheckTimeFaulty() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(CheckTimeFaulty) {
     std::vector<std::string> cases({
         "15:60",
         "300:3",
@@ -89,12 +78,9 @@ Test testCheckTimeFaulty() {
             test.fail(cases[i]);
         }
     }
-    return test;
-}
+} END_TEST
 
-Test testConvertTime_seconds() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(ConvertTime_seconds) {
     std::map<std::string, double> cases;
     cases["90.351"] = 90.351;
     cases["33:50.120"] = 33 * 60 + 50.120;
@@ -110,11 +96,9 @@ Test testConvertTime_seconds() {
         }
     }
     return test;
-}
+} END_TEST
 
-Test testConvertTime_minutes() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(ConvertTime_minutes) {
     std::map<std::string, double> cases;
     cases["90.351"] = 90.351 / 60.0;
     cases["33:50.120"] = 33 + 50.120 / 60.0;
@@ -129,12 +113,9 @@ Test testConvertTime_minutes() {
             test.fail(testCase.first);
         }
     }
-    return test;
-}
+} END_TEST
 
-Test testConvertTime_hours() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(ConvertTime_hours) {
     std::map<std::string, double> cases;
     cases["90.351"] = 90.351 / 3600.0;
     cases["33:50.120"] = 33 / 60.0 + 50.120 / 3600.0;
@@ -149,12 +130,9 @@ Test testConvertTime_hours() {
             test.fail(testCase.first);
         }
     }
-    return test;
-}
+} END_TEST
 
-Test testFormatTime() {
-    Test test(__FUNCTION__);
-
+TEST_CASE(FormatTime) {
     std::map<double, std::string> cases;
     cases[90.351] = "0:01:30.351";
     cases[33 * 60 + 50.120] = "0:33:50.120";
@@ -170,16 +148,16 @@ Test testFormatTime() {
         }
     }
     return test;
-}
-
+} END_TEST
+#include <iostream>
 int main(int argc, char const *argv[]) {
-    runTest(testSplitToComponents);
-    runTest(testSplitToComponentsFaulty);
-    runTest(testCheckTime);
-    runTest(testCheckTimeFaulty);
-    runTest(testConvertTime_seconds);
-    runTest(testConvertTime_minutes);
-    runTest(testConvertTime_hours);
-    runTest(testFormatTime);
+    runTest(SplitToComponents);
+    runTest(SplitToComponentsFaulty);
+    runTest(CheckTime);
+    runTest(CheckTimeFaulty);
+    runTest(ConvertTime_seconds);
+    runTest(ConvertTime_minutes);
+    runTest(ConvertTime_hours);
+    runTest(FormatTime);
     return 0;
 }
