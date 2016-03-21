@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <math.h>
 
-#include "test_functions.h"
+#include "unittest.h"
 
 bool equals(double value1, double value2, double epsilon) {
     return fabs(value1 - value2) <= epsilon;
@@ -16,6 +16,7 @@ std::string wrapString(std::string toWrap, char wrapper, size_t fullLength) {
 
 void runTest(Test func()) {
     Test result = func();
+    result.run();
     std::cout << result.getName() << "()";
     if (result.hasPassed()) {
         std::cout << " -- PASS";

@@ -157,7 +157,7 @@ Racer parseRacer(std::ifstream& file) {
 int main(int argc, char const *argv[]) {
     if (argc < 2) {
         std::cout << "Need input file" << std::endl;
-        return -1;
+        return 1;
     }
     std::ifstream file(argv[1]);
     auto leader = parseRacer(file);

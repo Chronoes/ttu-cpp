@@ -1,5 +1,5 @@
-#ifndef TEST_FUNCTIONS
-#define TEST_FUNCTIONS
+#ifndef UNITTEST_FUNCTIONS
+#define UNITTEST_FUNCTIONS
 
 #include <string>
 #include <algorithm>
@@ -11,7 +11,7 @@ class Test {
     std::vector<std::string> failedInputs;
     public:
         Test(std::string funcName) : name(funcName) {}
-        std::function<void()> func;
+        std::function<void()> run;
 
         std::string getName() { return this->name; }
         void fail(std::string input) { this->passed = false; this->failedInputs.push_back(input); }
@@ -28,7 +28,7 @@ bool equals(double value1, double value2, double epsilon);
 #define TEST_CASE(Name) \
 Test Name() { \
     Test test(#Name); \
-    test.func = [&test]
+    test.run = [&test]
 
 #define END_TEST ; return test; }
 

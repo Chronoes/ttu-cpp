@@ -1,7 +1,7 @@
 #include <map>
 #include <algorithm>
 
-#include "test_functions.h"
+#include "unittest.h"
 #include "kodu2.h"
 
 TEST_CASE(SplitToComponents) {
@@ -149,7 +149,7 @@ TEST_CASE(FormatTime) {
     }
     return test;
 } END_TEST
-#include <iostream>
+
 int main(int argc, char const *argv[]) {
     runTest(SplitToComponents);
     runTest(SplitToComponentsFaulty);
