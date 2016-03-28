@@ -1,0 +1,14 @@
+1	Nico Rosberg 	GER 	Mercedes	1:48:15.565	25
+2 	Lewis Hamilton 	GBR 	Mercedes	+8.060s	18
+3 	Sebastian Vettel 	GER 	Ferrari 	+9.643s	15
+4 	Daniel Ricciardo 	AUs	Red Bull Racing 	+24.330s	12
+5 	Felipe Massa 	BRA 	Williams	+58.979s	10
+6 	Romain Grosjean 	FRA 	Haas	+72.081s	8
+7 	Nico Hulkenberg 	GER 	Force India 	+74.199s	6
+8 	Valtteri Bottas	FIN 	Williams	+75.153s	4
+9 	Carlos Sainz 	ESP 	Toro Rosso 	+75.680s	2
+10 	Max Verstappen 	NED 	Toro Rosso 	+76.833s	1
+11 	Jolyon Palmer 	GBR 	Renault 	+83.399s	0
+12 	Kevin Magnussen 	DEN 	Renault 	+85.606s	0
+13 	Sergio Perez 	MEX 	Force India 	+91.699s	0
+14 	Jenson Button 	GBR 	McLaren 	+1 lap 	0
