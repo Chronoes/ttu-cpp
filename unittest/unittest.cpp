@@ -3,11 +3,7 @@
 #include <algorithm>
 #include <math.h>
 
-#include "unittest.h"
-
-bool equals(double value1, double value2, double epsilon) {
-    return fabs(value1 - value2) <= epsilon;
-}
+#include "unittest.hpp"
 
 std::string wrapString(std::string toWrap, char wrapper, size_t fullLength) {
     std::string wrapperString = std::string((fullLength - toWrap.length()) / 2, wrapper);

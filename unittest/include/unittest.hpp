@@ -22,7 +22,9 @@ class Test {
 
 void runTest(Test func());
 
-bool equals(double value1, double value2, double epsilon);
+inline bool equals(double value1, double value2, double epsilon) {
+    return fabs(value1 - value2) <= epsilon;
+}
 
 // Helper macro to initialise test case
 #define TEST_CASE(Name) \
