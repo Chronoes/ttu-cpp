@@ -1,5 +1,7 @@
 #include <map>
 #include <string>
+#include <ctime>
+
 #include "unittest.hpp"
 #include "Teenus.hpp"
 
@@ -51,9 +53,10 @@ TEST_CASE(Teenus_constructor_serviceName_start_end) {
     auto service = new Teenus("name", 7.5, 18.5);
     for (auto element : service->openTimes) {
         auto range = element.second;
-        if (!equals(range.start, 7.5, 1e-3) || !equals(range.end, 18.5, 1e-3)) {
+        auto expected = new TimeRange(7.5, 18.5);
+        if (*range != *expected) {
             char str[200];
-            std::sprintf(str, "%c: %f, %f", element.first, range.start, range.end);
+            std::sprintf(str, "%c: %f, %f", element.first, range->start, range->end);
             test.fail(str);
         }
     }
@@ -64,22 +67,53 @@ TEST_CASE(Teenus_constructor_serviceName_range_start_end) {
     for (auto element : service->openTimes) {
         auto range = element.second;
         if (element.first == Day::Saturday || element.first == Day::Sunday) {
-            if (!equals(range.start, 0, 1e-3) || !equals(range.end, 0, 1e-3)) {
+            auto expected = new TimeRange(0, 0);
+            if (*range != *expected) {
                 char str[200];
-                std::sprintf(str, "%c: %f, %f", element.first, range.start, range.end);
+                std::sprintf(str, "%c: %f, %f", element.first, range->start, range->end);
                 test.fail(str);
             }
         } else {
-            if (!equals(range.start, 10, 1e-3) || !equals(range.end, 0, 1e-3)) {
+            auto expected = new TimeRange(10, 0);
+            if (*range != *expected) {
                 char str[200];
-                std::sprintf(str, "%c: %f, %f", element.first, range.start, range.end);
+                std::sprintf(str, "%c: %f, %f", element.first, range->start, range->end);
                 test.fail(str);
             }
         }
     }
 } END_TEST
 
+TEST_CASE(Paev) {
+    auto service = new Teenus("name");
+    service->paev('T', 3.25, 12);
+    auto range = service->openTimes[Day::Tuesday];
+    auto expected = new TimeRange(3.25, 12);
+    if (*range != *expected) {
+        char str[200];
+        std::sprintf(str, "%f, %f", range->start, range->end);
+        test.fail(str);
+    }
+} END_TEST
 
+TEST_CASE(Tunnid) {
+    auto service = new Teenus("name", "E-R", 9, 17);
+    if (!equals(service->tunnid(), 40, 1e-3)) {
+        test.fail("E-R: 9, 17 == " + std::to_string(service->tunnid()));
+    }
+} END_TEST
+
+TEST_CASE(Onavatud) {
+    time_t _currentTime;
+    std::time(&_currentTime);
+    auto currentTime = std::localtime(&_currentTime);
+    auto service = new Teenus("name", currentTime->tm_hour - 1, currentTime->tm_hour + 1);
+    if (!service->onavatud()) {
+        char str[200];
+        std::sprintf(str, "%f, %f", (double) currentTime->tm_hour - 1, (double) currentTime->tm_hour + 1);
+        test.fail(str);
+    }
+} END_TEST
 
 int main(int argc, char const *argv[]) {
     runTest(GetDay);
@@ -87,5 +121,8 @@ int main(int argc, char const *argv[]) {
     runTest(Teenus_constructor_serviceName);
     runTest(Teenus_constructor_serviceName_start_end);
     runTest(Teenus_constructor_serviceName_range_start_end);
+    runTest(Paev);
+    runTest(Tunnid);
+    runTest(Onavatud);
     return 0;
 }

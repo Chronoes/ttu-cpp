@@ -25,14 +25,20 @@ Day getDay(char);
 
 std::pair<Day, Day> parseDayRange(std::string);
 
-typedef struct TimeRange {
-    double start, end;
-} TimeRange;
+class TimeRange {
+public:
+    const double start, end;
+    TimeRange();
+    TimeRange(double, double);
+    bool inRange(double);
+    bool operator==(TimeRange&);
+    bool operator!=(TimeRange&);
+};
 
 class Teenus {
 private:
     std::string name;
-    std::map<Day, TimeRange> openTimes;
+    std::map<Day, TimeRange*> openTimes;
     void initOpenTimes(TimeRange);
     void setOpenTime(Day, TimeRange);
 public:

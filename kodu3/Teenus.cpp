@@ -2,8 +2,13 @@
 #include <iterator>
 #include <algorithm>
 #include <vector>
+#include <cmath>
 
 #include "Teenus.hpp"
+
+inline bool equals(double value1, double value2, double epsilon) {
+    return std::fabs(value1 - value2) <= epsilon;
+}
 
 std::vector<Day> DayRange = {
     Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday,
@@ -27,6 +32,25 @@ std::pair<Day, Day> parseDayRange(std::string range) {
     return std::pair<Day, Day>(getDay(range[0]), None);
 }
 
+
+TimeRange::TimeRange() : start(0), end(0) {}
+
+TimeRange::TimeRange(double _start, double _end) :
+start(std::fmod(std::fabs(_start), 24)), end(std::fmod(std::fabs(_end), 24)) {}
+
+bool TimeRange::inRange(double hours) {
+    return this->start <= hours && hours <= this->end;
+}
+
+bool TimeRange::operator==(TimeRange& range) {
+    return equals(this->start, range.start, 1e-3) && equals(this->end, range.end, 1e-3);
+}
+
+bool TimeRange::operator!=(TimeRange& range) {
+    return !this->operator==(range);
+}
+
+
 Teenus::Teenus(std::string serviceName) : Teenus(serviceName, 0, 0) {}
 
 Teenus::Teenus(std::string serviceName, double start, double end) : name(serviceName) {
@@ -49,20 +73,21 @@ Teenus::Teenus(std::string serviceName, std::string dayRange, double start, doub
 }
 
 
+
 void Teenus::initOpenTimes(TimeRange range) {
-    this->openTimes = std::map<Day, TimeRange> {
-        {Day::Monday, {range.start, range.end}},
-        {Day::Tuesday, {range.start, range.end}},
-        {Day::Wednesday, {range.start, range.end}},
-        {Day::Thursday, {range.start, range.end}},
-        {Day::Friday, {range.start, range.end}},
-        {Day::Saturday, {range.start, range.end}},
-        {Day::Sunday, {range.start, range.end}}
+    this->openTimes = std::map<Day, TimeRange*> {
+        {Day::Monday, new TimeRange(range.start, range.end)},
+        {Day::Tuesday, new TimeRange(range.start, range.end)},
+        {Day::Wednesday, new TimeRange(range.start, range.end)},
+        {Day::Thursday, new TimeRange(range.start, range.end)},
+        {Day::Friday, new TimeRange(range.start, range.end)},
+        {Day::Saturday, new TimeRange(range.start, range.end)},
+        {Day::Sunday, new TimeRange(range.start, range.end)}
     };
 }
 
-void Teenus::setOpenTime(Day day, TimeRange timeRange) {
-    this->openTimes[day] = timeRange;
+void Teenus::setOpenTime(Day day, TimeRange range) {
+    this->openTimes[day] = new TimeRange(range.start, range.end);
 }
 
 const std::string Teenus::nimi() {
@@ -78,17 +103,17 @@ void Teenus::paev(char day, double start, double end) {
 
 double Teenus::tunnid() {
     return std::accumulate(this->openTimes.begin(), this->openTimes.end(), 0.0,
-    [](double carry, std::pair<Day, TimeRange> next) {
+    [](double carry, std::pair<Day, TimeRange*> next) {
         auto timeRange = next.second;
-        if (timeRange.end < timeRange.start) {
+        if (timeRange->end < timeRange->start) {
             carry += 24;
         }
-        return carry + timeRange.end - timeRange.start;
+        return carry + timeRange->end - timeRange->start;
     });
 }
 
-inline double convertToHoursFrom(std::tm timeStruct) {
-    return static_cast<double>(timeStruct.tm_hour) + static_cast<double>(timeStruct.tm_min) / 60 + static_cast<double>(timeStruct.tm_sec) / 3600;
+inline double convertToHoursFrom(std::tm* timeStruct) {
+    return static_cast<double>(timeStruct->tm_hour) + static_cast<double>(timeStruct->tm_min) / 60 + static_cast<double>(timeStruct->tm_sec) / 3600;
 }
 
 bool Teenus::onavatud() {
@@ -99,8 +124,7 @@ bool Teenus::onavatud() {
     auto it = DayRange.cbegin();
     std::advance(it, currentTime->tm_wday + 1);
     auto timeRange = this->openTimes.at(*it);
-    double currentHours = convertToHoursFrom(*currentTime);
-    return timeRange.start <= currentHours && currentHours <= timeRange.end;
+    return timeRange->inRange(convertToHoursFrom(currentTime));
 }
 
 bool Teenus::operator> (Teenus& otherService) {
