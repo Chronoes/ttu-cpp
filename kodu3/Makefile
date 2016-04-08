@@ -27,5 +27,8 @@ bin/test: bin/Teenus.o
 test: bin/test
 	./bin/test
 
+package:
+	cat <(cat Teenus.hpp) <(sed 's/#include "Teenus.hpp"//' Teenus.cpp) > Teenus.h
+
 clean:
-	rm -rf bin
+	rm -rf bin Teenus.h
