@@ -115,6 +115,16 @@ TEST_CASE(Onavatud) {
     }
 } END_TEST
 
+TEST_CASE(OperatorGreaterThan) {
+    auto service = new Teenus("name", "E-R", 9, 17);
+    auto service2 = new Teenus("name", "E-R", 9, 16);
+    if (!(service > service2)) {
+        char str[200];
+        std::sprintf(str, "%f, %f", range->start, range->end);
+        test.fail()
+    }
+} END_TEST
+
 int main(int argc, char const *argv[]) {
     runTest(GetDay);
     runTest(ParseDayRange);
@@ -124,5 +134,6 @@ int main(int argc, char const *argv[]) {
     runTest(Paev);
     runTest(Tunnid);
     runTest(Onavatud);
+    runTest(OperatorGreaterThan);
     return 0;
 }

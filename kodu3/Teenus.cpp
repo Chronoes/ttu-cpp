@@ -122,11 +122,11 @@ bool Teenus::onavatud() {
     auto currentTime = std::localtime(&_currentTime);
 
     auto it = DayRange.cbegin();
-    std::advance(it, currentTime->tm_wday + 1);
+    std::advance(it, (currentTime->tm_wday - 1) % 7);
     auto timeRange = this->openTimes.at(*it);
     return timeRange->inRange(convertToHoursFrom(currentTime));
 }
 
 bool Teenus::operator> (Teenus& otherService) {
-    return this->tunnid() - otherService.tunnid() > 1e3;
+    return this->tunnid() - otherService.tunnid() > 1e-3;
 }
