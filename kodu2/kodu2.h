@@ -4,7 +4,6 @@
 #include <string>
 #include <algorithm>
 
-#define DEBUG 0
 #define WRONG_FORMAT -1
 
 /** timeString full format is expected to be h:mm:ss.xxx or h:mm:ss,xxx
