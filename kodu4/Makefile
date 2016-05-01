@@ -16,5 +16,8 @@ kodu2.o:
 main: Saade.o main.o kodu2.o
 	$(CC) $(CFLAGS) -o main $^
 
+package:
+	cat Saade.hpp Saade.cpp ../kodu2/kodu2.h ../kodu2/kodu2.cpp main.cpp | sed 's/#include "Saade.hpp//; s/#include "..\/kodu2\/kodu2.h"//; s/#include "kodu2.h"//'
+
 clean:
 	rm -rf *.o main test
