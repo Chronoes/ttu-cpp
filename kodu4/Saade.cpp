@@ -38,8 +38,16 @@ double Saade::getLength() {
     return runTime.second;
 }
 
-Kordussaade::Kordussaade(std::string name, std::string date) : Saade(name, date) {}
-Kordussaade::Kordussaade(std::string name, std::string date, TimeRange _originalRunTime) : Saade(name, date), originalRunTime(_originalRunTime) {}
+bool Saade::isRepeatingShow() {
+    return isRepeat;
+}
+
+Kordussaade::Kordussaade(std::string name, std::string date) : Saade(name, date) {
+    isRepeat = true;
+}
+Kordussaade::Kordussaade(std::string name, std::string date, TimeRange _originalRunTime) : Saade(name, date), originalRunTime(_originalRunTime) {
+    isRepeat = true;
+}
 
 const std::string Kordussaade::getName() {
     return Saade::getName() + " (Kordus" + (originalRunTime.second > 0 ? ", originaal " + originalRunTime.first : "") + ")";

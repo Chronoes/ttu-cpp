@@ -16,6 +16,8 @@ private:
     std::string name;
     std::string date;
     TimeRange runTime;
+protected:
+    bool isRepeat = false;
 public:
     Saade(std::string name, std::string date);
 
@@ -27,6 +29,7 @@ public:
     TimeRange getRunTime();
     const std::string getStartTime();
     double getLength();
+    bool isRepeatingShow();
 
     virtual TimeRange getOriginalRunTime();
 };

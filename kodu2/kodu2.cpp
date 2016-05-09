@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <math.h>
 #include <fstream>
+#include <vector>
 
 #include "kodu2.h"
 

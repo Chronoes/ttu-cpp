@@ -88,10 +88,12 @@ int main(int argc, char const *argv[]) {
     for (auto iter = shows.begin(); iter != shows.end(); iter++) {
         std::cout << (*iter)->getStartTime() << " " << (*iter)->getName() << " -- " << (*iter)->getLength() << " min" << std::endl;
         allShowsLength += (*iter)->getLength();
-        auto showLength = (*iter)->getOriginalRunTime().second;
-        repeatingShowsLength += showLength;
-        if (showLength > maxRepeatingShow) {
-            maxRepeatingShow = showLength;
+        if ((*iter)->isRepeatingShow()) {
+            auto showLength = (*iter)->getRunTime().second;
+            repeatingShowsLength += showLength;
+            if (showLength > maxRepeatingShow) {
+                maxRepeatingShow = showLength;
+            }
         }
 
     }
