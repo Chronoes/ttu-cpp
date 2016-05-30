@@ -1,0 +1,35 @@
+05:40 - 08:12	Tallinn - Põltsamaa - Tartu	Arilix OÜ
+07:00 - 09:30	Tallinn - Tartu	Lux Express Estonia AS
+07:30 - 10:00	Tallinn - Tartu	Lux Express Estonia AS
+08:00 - 10:30	Tallinn - Tartu	Lux Express Estonia AS
+08:30 - 11:05	Tallinn - Tartu - Antsla	Taisto Liinid OÜ
+09:00 - 11:30	Tallinn - Tartu	Lux Express Estonia AS
+09:30 - 12:45	Tallinn - Võru	Eesti Buss OÜ
+10:00 - 12:30	Tallinn - Tartu	Lux Express Estonia AS
+10:30 - 13:00	Tallinn - Tartu	Eesti Buss OÜ
+11:00 - 13:30	Tallinn - Tartu	Lux Express Estonia AS
+11:30 - 14:10	Tallinn - Tartu - Võru	MK Autobuss AS
+12:00 - 14:30	Tallinn - Tartu	Lux Express Estonia AS
+12:45 - 15:15	Tallinn - Tartu - Võru	Taisto Liinid OÜ
+13:00 - 15:30	Tallinn - Tartu	Lux Express Estonia AS
+14:00 - 16:30	Tallinn - Tartu	Lux Express Estonia AS
+14:15 - 16:45	Tallinn - Võru	Bussipartner OÜ
+15:00 - 17:30	Tallinn - Tartu	Lux Express Estonia AS
+15:25 - 18:20	Tallinn - Põltsamaa - Tartu	Presto OÜ
+15:30 - 18:00	Tallinn - Tartu	Eesti Buss OÜ
+16:00 - 18:30	Tallinn - Tartu	Lux Express Estonia AS
+16:15 - 19:05	Tallinn - Tartu - Võru	Eesti Buss OÜ
+16:30 - 19:00	Tallinn - Tartu	Hansabuss AS
+16:45 - 19:20	Tallinn - Tartu - Põlva - Võru	Forcen Grupp OÜ
+17:00 - 19:30	Tallinn - Tartu	Lux Express Estonia AS
+17:30 - 20:00	Tallinn - Tartu	Lux Express Estonia AS
+18:00 - 20:30	Tallinn - Tartu	Lux Express Estonia AS
+18:30 - 21:00	Tallinn - Tartu	Eesti Buss OÜ
+18:30 - 21:00	Tallinn - Tartu	Lux Express Estonia AS
+18:45 - 21:35	Tallinn - Tartu - Põlva - Võru	Eesti Buss OÜ
+19:00 - 21:30	Tallinn - Tartu	Lux Express Estonia AS
+19:30 - 22:00	Tallinn - Tartu	Eesti Buss OÜ
+20:00 - 22:30	Tallinn - Tartu - Luhamaa	Lux Express Estonia AS
+21:00 - 23:30	Tallinn - Tartu	Lux Express Estonia AS
+21:30 - 00:00	Tallinn - Tartu - Võru	Taisto Liinid OÜ
+23:00 - 01:45	Tallinn - Põltsamaa - Tartu	Eesti Buss OÜ
